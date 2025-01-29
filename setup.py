@@ -91,8 +91,7 @@ setup(
         "Operating System :: POSIX :: Linux",
         "Topic :: Scientific/Engineering"
     ],
-#     setup_requires=["cython>=0.19"],
-#     install_requires=["cython>=0.19"],
+    install_requires=["numpy"],
     packages=["idlbridge"],
     ext_modules=cythonize(extensions, force=force, compiler_directives=directives)
 )
