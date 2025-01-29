@@ -15,8 +15,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with IDLBridge. If not, see <http://www.gnu.org/licenses/>.
 
-from distutils.core import setup
-from distutils.extension import Extension
+from setuptools import setup, Extension
 from Cython.Build import cythonize
 import sys
 import numpy
