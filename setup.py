@@ -57,22 +57,18 @@ libraries = ["idl"]
 extra_compile_args = []
 extra_link_args = ["-Wl,-rpath,.", "-Wl,-rpath,{}".format(idl_library_path)]
 
-setup_path = path.dirname(path.abspath(__file__))
+idl_core_sources = ["idlbridge/_core.pyx"]
+idl_core = Extension(
+    "idlbridge._core",
+    idl_core_sources,
+    include_dirs=include_dirs,
+    libraries=libraries,
+    library_dirs=library_dirs,
+    extra_compile_args=extra_compile_args,
+    extra_link_args=extra_link_args,
+)
 
-# build extension list
-extensions = []
-for root, dirs, files in os.walk(setup_path):
-    for file in files:
-        if path.splitext(file)[1] == ".pyx":
-            pyx_file = path.relpath(path.join(root, file), setup_path)
-            module = path.splitext(pyx_file)[0].replace("/", ".")
-            extensions.append(Extension(module,
-                                        [pyx_file],
-                                        include_dirs=include_dirs,
-                                        libraries=libraries,
-                                        library_dirs=library_dirs,
-                                        extra_compile_args=extra_compile_args,
-                                        extra_link_args=extra_link_args))
+extensions = [idl_core]
 
 if profile:
     directives = {"profile": True}
