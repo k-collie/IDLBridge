@@ -78,6 +78,7 @@ setup(
     name="idlbridge",
     version=__version__,
     description="An IDL wrapper for Python",
+    requires_python=">=3.4",
     author='Dr. Alex Meakins',
     author_email='alex.meakins@ukaea.uk',
     license="LGPLv3",
@@ -91,7 +92,10 @@ setup(
         "Operating System :: POSIX :: Linux",
         "Topic :: Scientific/Engineering"
     ],
-    install_requires=["numpy"],
+    install_requires=[
+        "importlib_metadata>=0.1 ; python_version < \"3.8\"",
+        "numpy",
+    ],
     packages=["idlbridge"],
     ext_modules=cythonize(extensions, force=force, compiler_directives=directives)
 )
