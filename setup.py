@@ -15,8 +15,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with IDLBridge. If not, see <http://www.gnu.org/licenses/>.
 
-from distutils.core import setup
-from distutils.extension import Extension
+from setuptools import setup, Extension
 from Cython.Build import cythonize
 import sys
 import numpy
@@ -57,22 +56,18 @@ libraries = ["idl"]
 extra_compile_args = []
 extra_link_args = ["-Wl,-rpath,.", "-Wl,-rpath,{}".format(idl_library_path)]
 
-setup_path = path.dirname(path.abspath(__file__))
+idl_core_sources = ["idlbridge/_core.pyx"]
+idl_core = Extension(
+    "idlbridge._core",
+    idl_core_sources,
+    include_dirs=include_dirs,
+    libraries=libraries,
+    library_dirs=library_dirs,
+    extra_compile_args=extra_compile_args,
+    extra_link_args=extra_link_args,
+)
 
-# build extension list
-extensions = []
-for root, dirs, files in os.walk(setup_path):
-    for file in files:
-        if path.splitext(file)[1] == ".pyx":
-            pyx_file = path.relpath(path.join(root, file), setup_path)
-            module = path.splitext(pyx_file)[0].replace("/", ".")
-            extensions.append(Extension(module,
-                                        [pyx_file],
-                                        include_dirs=include_dirs,
-                                        libraries=libraries,
-                                        library_dirs=library_dirs,
-                                        extra_compile_args=extra_compile_args,
-                                        extra_link_args=extra_link_args))
+extensions = [idl_core]
 
 if profile:
     directives = {"profile": True}
@@ -83,6 +78,7 @@ setup(
     name="idlbridge",
     version=__version__,
     description="An IDL wrapper for Python",
+    requires_python=">=3.4",
     author='Dr. Alex Meakins',
     author_email='alex.meakins@ukaea.uk',
     license="LGPLv3",
@@ -96,8 +92,10 @@ setup(
         "Operating System :: POSIX :: Linux",
         "Topic :: Scientific/Engineering"
     ],
-#     setup_requires=["cython>=0.19"],
-#     install_requires=["cython>=0.19"],
+    install_requires=[
+        "importlib_metadata>=0.1 ; python_version < \"3.8\"",
+        "numpy",
+    ],
     packages=["idlbridge"],
     ext_modules=cythonize(extensions, force=force, compiler_directives=directives)
 )

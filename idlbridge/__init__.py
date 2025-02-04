@@ -26,9 +26,15 @@ exposed in Python and be called like native Python functions.
 import ctypes as _ctypes
 from . import _core
 
+try:
+    from importlib.metadata import version
+except ImportError:
+    # try-except be removed if requires-python set to >= 3.8
+    from importlib_metadata import version
+
 __author__ = 'Dr. Alex Meakins'
 __responsible_officer__ = 'Dr. Alex Meakins'
-__version__ = "1.1.0"
+__version__ = version("idlbridge")
 
 # By default the core (IDL) library is opened by Python with RTLD_LOCAL
 # preventing subsequently loaded IDL DLM libraries from seeing the IDL_*

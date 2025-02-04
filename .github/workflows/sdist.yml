@@ -1,0 +1,35 @@
+# This workflow will install Python and build sdist
+
+name: sdist
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - master
+      - dev
+
+jobs:
+  build-dist:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.13
+
+    - name: Build package
+      run: |
+        pip install build
+        # fake IDL_DIR to build source package without installing IDL
+        IDL_DIR=/fake-idl-dir python -m build --sdist .
+
+    - name: Store source distribution as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        path: 'dist/idlbridge-*.tar.gz'
