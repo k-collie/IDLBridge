@@ -1,5 +1,4 @@
-IDLBridge
-=========
+# IDLBridge
 
 A python wrapper for the IDL.
 
@@ -18,6 +17,34 @@ without requiring significant code refactoring.
 
 - Dr Alex Meakins (alex.meakins@ukaea.uk)
 
+# Installation
 
+First ensure the `IDL_DIR` environment variable is set to the path to the IDL
+installation root (containing `/bin` and `/external`). `IDLBridge` can then be
+installed from [PyPI](https://pypi.org/):
 
+```bash
+pip install idlbridge
+```
 
+# Development
+
+## Build source distribution
+
+First install `build`:
+
+```bash
+pip install build
+```
+
+Then build the source distribution, note `IDL_DIR` must also be set for this:
+
+```bash
+python -m build --sdist .
+```
+
+## Run tests
+
+```bash
+python -m unittest
+```
